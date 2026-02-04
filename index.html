@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALO Proposal Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --valo-purple: #7c3aed;
+            --valo-purple-dark: #5b21b6;
+            --valo-purple-light: #a78bfa;
+            --valo-cyan: #06b6d4;
+            --valo-cyan-dark: #0891b2;
+            --valo-cyan-light: #67e8f9;
+            --bg-dark: #0f0a1a;
+            --bg-card: #1a1025;
+            --bg-elevated: #251a35;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --border-color: #334155;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --starter: #10b981;
+            --professional: #3b82f6;
+            --enterprise: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--valo-purple) 0%, var(--valo-cyan) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--valo-purple-light) 0%, var(--valo-cyan-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Main Layout */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .panel-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--bg-elevated);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .panel-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.9375rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--valo-purple);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+        }
+
+        /* Checkbox Grid */
+        .checkbox-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--valo-purple);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--valo-purple);
+            cursor: pointer;
+        }
+
+        .checkbox-label {
+            flex: 1;
+            font-size: 0.9375rem;
+            cursor: pointer;
+        }
+
+        /* Tier Selector */
+        .tier-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .tier-card {
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tier-card:hover {
+            border-color: var(--valo-purple);
+        }
+
+        .tier-card.active {
+            border-color: var(--valo-purple);
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%);
+        }
+
+        .tier-card.starter.active { border-color: var(--starter); }
+        .tier-card.professional.active { border-color: var(--professional); }
+        .tier-card.enterprise.active { border-color: var(--enterprise); }
+
+        .tier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .tier-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .tier-price {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            background: var(--bg-dark);
+        }
+
+        .tier-card.starter .tier-price { color: var(--starter); }
+        .tier-card.professional .tier-price { color: var(--professional); }
+        .tier-card.enterprise .tier-price { color: var(--enterprise); }
+
+        .tier-desc {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        /* Template Selector */
+        .template-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .template-option {
+            padding: 0.875rem 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .template-option:hover {
+            border-color: var(--valo-purple);
+        }
+
+        .template-option.active {
+            border-color: var(--valo-purple);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .template-icon {
+            font-size: 1.25rem;
+        }
+
+        .template-info {
+            flex: 1;
+        }
+
+        .template-name {
+            font-weight: 500;
+            font-size: 0.9375rem;
+        }
+
+        .template-desc {
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .preview-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .preview-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .preview-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--valo-purple) 0%, var(--valo-cyan) 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-card);
+            border-color: var(--valo-purple);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 0.875rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn-lg {
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        /* Proposal Preview */
+        .proposal-preview {
+            background: white;
+            color: #1e293b;
+            padding: 3rem;
+            min-height: 800px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+        }
+
+        .proposal-header {
+            text-align: center;
+            padding-bottom: 2rem;
+            border-bottom: 3px solid #7c3aed;
+            margin-bottom: 2rem;
+        }
+
+        .proposal-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .proposal-tagline {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .proposal-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin: 2rem 0 0.5rem;
+        }
+
+        .proposal-subtitle {
+            color: #64748b;
+            font-size: 1.125rem;
+        }
+
+        .proposal-meta {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 0.25rem;
+        }
+
+        .meta-value {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .proposal-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.375rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-content {
+            color: #475569;
+            font-size: 1rem;
+        }
+
+        .section-content p {
+            margin-bottom: 1rem;
+        }
+
+        .deliverable-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .deliverable-list li {
+            padding: 0.75rem 0;
+            padding-left: 1.75rem;
+            position: relative;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .deliverable-list li:last-child {
+            border-bottom: none;
+        }
+
+        .deliverable-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .timeline-phase {
+            min-width: 120px;
+            font-weight: 600;
+            color: #7c3aed;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-desc {
+            color: #64748b;
+            font-size: 0.9375rem;
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .pricing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-tier {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .pricing-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #7c3aed;
+        }
+
+        .pricing-note {
+            color: #64748b;
+            font-size: 0.875rem;
+            font-style: italic;
+        }
+
+        .proposal-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+            color: #64748b;
+        }
+
+        .proposal-footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Editable proposal */
+        .proposal-preview [contenteditable="true"] {
+            outline: none;
+            border-radius: 4px;
+            padding: 0 4px;
+            margin: 0 -4px;
+        }
+
+        .proposal-preview [contenteditable="true"]:hover {
+            background: #f8fafc;
+        }
+
+        .proposal-preview [contenteditable="true"]:focus {
+            background: #f0f9ff;
+            box-shadow: 0 0 0 2px #7c3aed;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Export Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 10, 26, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .export-options {
+            display: grid;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .export-option {
+            padding: 1rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .export-option:hover {
+            border-color: var(--valo-purple);
+            background: rgba(124, 58, 237, 0.1);
+        }
+
+        .export-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .export-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .export-info p {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: var(--success);
+            color: white;
+            border-radius: 10px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1100;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+            
+            .header,
+            .sidebar,
+            .preview-toolbar,
+            .action-bar,
+            .modal-overlay {
+                display: none !important;
+            }
+            
+            .container {
+                display: block;
+                padding: 0;
+            }
+            
+            .preview-container {
+                border: none;
+                border-radius: 0;
+            }
+            
+            .proposal-preview {
+                padding: 2rem;
+                min-height: auto;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--valo-purple);
+        }
+
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 0.25rem;
+            padding: 0.25rem;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 0.625rem 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .tab.active {
+            background: var(--valo-purple);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--border-color);
+            border-top-color: var(--valo-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 0.75rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .quick-action {
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quick-action:hover {
+            border-color: var(--valo-cyan);
+            color: var(--valo-cyan);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <div class="logo-icon">V</div>
+            <span class="logo-text">VALO Proposal Generator</span>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary btn-sm" onclick="loadFromStorage()">
+                📂 Load Saved
+            </button>
+            <button class="btn btn-secondary btn-sm" onclick="saveToStorage()">
+                💾 Save
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="showExportModal()">
+                📤 Export
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <!-- Template Selection -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">📋</div>
+                    <span class="panel-title">Proposal Template</span>
+                </div>
+                <div class="template-list">
+                    <div class="template-option active" data-template="discovery">
+                        <span class="template-icon">🔍</span>
+                        <div class="template-info">
+                            <div class="template-name">AI Discovery</div>
+                            <div class="template-desc">Assessment & roadmap</div>
+                        </div>
+                    </div>
+                    <div class="template-option" data-template="implementation">
+                        <span class="template-icon">⚡</span>
+                        <div class="template-info">
+                            <div class="template-name">Implementation</div>
+                            <div class="template-desc">Build & deploy solution</div>
+                        </div>
+                    </div>
+                    <div class="template-option" data-template="retainer">
+                        <span class="template-icon">🤝</span>
+                        <div class="template-info">
+                            <div class="template-name">Ongoing Retainer</div>
+                            <div class="template-desc">Monthly AI support</div>
+                        </div>
+                    </div>
+                    <div class="template-option" data-template="training">
+                        <span class="template-icon">🎓</span>
+                        <div class="template-info">
+                            <div class="template-name">AI Training</div>
+                            <div class="template-desc">Team upskilling</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Info -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">🏢</div>
+                    <span class="panel-title">Client Information</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Company Name</label>
+                    <input type="text" class="form-input" id="clientCompany" placeholder="Acme Corporation">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Name</label>
+                    <input type="text" class="form-input" id="clientName" placeholder="John Smith">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Contact Title</label>
+                    <input type="text" class="form-input" id="clientTitle" placeholder="CEO / CTO">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Industry</label>
+                    <select class="form-select" id="clientIndustry">
+                        <option value="">Select Industry...</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Finance">Finance & Banking</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Retail">Retail & E-commerce</option>
+                        <option value="Professional Services">Professional Services</option>
+                        <option value="Maritime">Maritime & Shipping</option>
+                        <option value="Energy">Energy & Utilities</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">🛠️</div>
+                    <span class="panel-title">Services Required</span>
+                </div>
+                <div class="checkbox-grid">
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="ai-audit" checked>
+                        <span class="checkbox-label">AI Readiness Audit</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="strategy">
+                        <span class="checkbox-label">AI Strategy Development</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="integration">
+                        <span class="checkbox-label">System Integration</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="automation">
+                        <span class="checkbox-label">Process Automation</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="training">
+                        <span class="checkbox-label">Team Training</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" value="support">
+                        <span class="checkbox-label">Ongoing Support</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Project Scope -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">📝</div>
+                    <span class="panel-title">Project Scope</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Project Summary</label>
+                    <textarea class="form-textarea" id="projectSummary" placeholder="Brief overview of the project objectives and challenges..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Discovery Notes</label>
+                    <textarea class="form-textarea" id="discoveryNotes" placeholder="Key findings, pain points, opportunities identified during discovery..."></textarea>
+                </div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">📅</div>
+                    <span class="panel-title">Timeline</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Target Start Date</label>
+                    <input type="date" class="form-input" id="startDate">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Desired Timeline</label>
+                    <select class="form-select" id="timeline">
+                        <option value="asap">ASAP (Rush)</option>
+                        <option value="1-month" selected>1 Month</option>
+                        <option value="2-months">2 Months</option>
+                        <option value="3-months">3 Months</option>
+                        <option value="6-months">6 Months</option>
+                        <option value="ongoing">Ongoing</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Key Milestones / Constraints</label>
+                    <textarea class="form-textarea" id="milestones" placeholder="Any specific deadlines or constraints..."></textarea>
+                </div>
+            </div>
+
+            <!-- Pricing Tier -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-icon">💰</div>
+                    <span class="panel-title">Pricing Tier</span>
+                </div>
+                <div class="tier-grid">
+                    <div class="tier-card starter" data-tier="starter" onclick="selectTier('starter')">
+                        <div class="tier-header">
+                            <span class="tier-name">Starter</span>
+                            <span class="tier-price">£5K - £15K</span>
+                        </div>
+                        <p class="tier-desc">Quick wins, focused scope, single use case</p>
+                    </div>
+                    <div class="tier-card professional active" data-tier="professional" onclick="selectTier('professional')">
+                        <div class="tier-header">
+                            <span class="tier-name">Professional</span>
+                            <span class="tier-price">£15K - £50K</span>
+                        </div>
+                        <p class="tier-desc">Comprehensive solution, multiple integrations</p>
+                    </div>
+                    <div class="tier-card enterprise" data-tier="enterprise" onclick="selectTier('enterprise')">
+                        <div class="tier-header">
+                            <span class="tier-name">Enterprise</span>
+                            <span class="tier-price">£50K+</span>
+                        </div>
+                        <p class="tier-desc">Full transformation, ongoing partnership</p>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label class="form-label">Specific Budget (Optional)</label>
+                    <input type="text" class="form-input" id="specificBudget" placeholder="e.g., £25,000">
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <button class="btn btn-primary btn-lg" onclick="generateProposal()" style="width: 100%;">
+                ✨ Generate Proposal
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="preview-container">
+                <div class="preview-toolbar">
+                    <div class="preview-title">
+                        👁️ Live Preview
+                        <span style="color: var(--text-muted); font-weight: 400; font-size: 0.875rem;">— Click text to edit</span>
+                    </div>
+                    <div class="toolbar-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="refreshPreview()">
+                            🔄 Refresh
+                        </button>
+                        <button class="btn btn-secondary btn-sm" onclick="window.print()">
+                            🖨️ Print
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="proposalContent" class="proposal-preview">
+                    <!-- Proposal content will be generated here -->
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        Fill in the form and click "Generate Proposal" to create your document
+                    </div>
+                </div>
+
+                <div class="action-bar">
+                    <button class="btn btn-secondary" onclick="copyToClipboard()">
+                        📋 Copy Text
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportAsMarkdown()">
+                        📝 Export Markdown
+                    </button>
+                    <button class="btn btn-secondary" onclick="exportAsHTML()">
+                        🌐 Export HTML
+                    </button>
+                    <button class="btn btn-success" onclick="window.print()">
+                        📄 Save as PDF
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal-overlay" id="exportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Export Proposal</h2>
+            </div>
+            <div class="export-options">
+                <div class="export-option" onclick="exportAsMarkdown()">
+                    <div class="export-icon">📝</div>
+                    <div class="export-info">
+                        <h4>Markdown</h4>
+                        <p>Plain text format for editing</p>
+                    </div>
+                </div>
+                <div class="export-option" onclick="exportAsHTML()">
+                    <div class="export-icon">🌐</div>
+                    <div class="export-info">
+                        <h4>HTML Document</h4>
+                        <p>Styled HTML for web sharing</p>
+                    </div>
+                </div>
+                <div class="export-option" onclick="exportAsDOCX()">
+                    <div class="export-icon">📄</div>
+                    <div class="export-info">
+                        <h4>DOCX-Style HTML</h4>
+                        <p>Word-compatible formatted HTML</p>
+                    </div>
+                </div>
+                <div class="export-option" onclick="copyToClipboard()">
+                    <div class="export-icon">📋</div>
+                    <div class="export-info">
+                        <h4>Copy to Clipboard</h4>
+                        <p>Copy formatted text for pasting</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="hideExportModal()" style="width: 100%;">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <span id="toastIcon">✓</span>
+        <span id="toastMessage">Action completed</span>
+    </div>
+
+    <script>
+        // State
+        let currentTemplate = 'discovery';
+        let currentTier = 'professional';
+        let generatedProposal = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date to today + 7 days
+            const defaultDate = new Date();
+            defaultDate.setDate(defaultDate.getDate() + 7);
+            document.getElementById('startDate').valueAsDate = defaultDate;
+
+            // Template selection
+            document.querySelectorAll('.template-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.template-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    currentTemplate = this.dataset.template;
+                });
+            });
+
+            // Auto-generate on input change (debounced)
+            let timeout;
+            document.querySelectorAll('input, textarea, select').forEach(input => {
+                input.addEventListener('input', function() {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        if (document.getElementById('clientCompany').value) {
+                            generateProposal();
+                        }
+                    }, 1000);
+                });
+            });
+
+            // Load saved data if exists
+            loadFromStorage();
+        });
+
+        // Tier selection
+        function selectTier(tier) {
+            currentTier = tier;
+            document.querySelectorAll('.tier-card').forEach(card => card.classList.remove('active'));
+            document.querySelector(`.tier-card[data-tier="${tier}"]`).classList.add('active');
+        }
+
+        // Template definitions
+        const templates = {
+            discovery: {
+                title: 'AI Discovery & Roadmap',
+                description: 'A comprehensive assessment of your AI readiness and a strategic roadmap for implementation.',
+                phases: [
+                    { name: 'Week 1-2', title: 'Discovery & Assessment', desc: 'Stakeholder interviews, system audit, opportunity mapping' },
+                    { name: 'Week 3-4', title: 'Analysis & Strategy', desc: 'Data analysis, use case prioritization, ROI modeling' },
+                    { name: 'Week 5-6', title: 'Roadmap Development', desc: 'Implementation roadmap, vendor evaluation, resource planning' }
+                ],
+                deliverables: [
+                    'AI Readiness Assessment Report',
+                    'Prioritized Use Case Matrix',
+                    'Implementation Roadmap (12-18 months)',
+                    'Vendor/Technology Recommendations',
+                    'Executive Presentation & Findings Deck'
+                ]
+            },
+            implementation: {
+                title: 'AI Implementation',
+                description: 'End-to-end build and deployment of your AI solution with full integration support.',
+                phases: [
+                    { name: 'Phase 1', title: 'Design & Architecture', desc: 'Solution design, architecture planning, data preparation' },
+                    { name: 'Phase 2', title: 'Development', desc: 'Model development, integration build, testing framework' },
+                    { name: 'Phase 3', title: 'Deployment', desc: 'Production deployment, monitoring setup, handover' }
+                ],
+                deliverables: [
+                    'Fully Functional AI Solution',
+                    'System Integration & API Connections',
+                    'User Documentation & Training Materials',
+                    'Monitoring & Alerting Setup',
+                    'Knowledge Transfer Session'
+                ]
+            },
+            retainer: {
+                title: 'AI Support Retainer',
+                description: 'Ongoing AI expertise and support to continuously optimize and expand your capabilities.',
+                phases: [
+                    { name: 'Monthly', title: 'Strategic Advisory', desc: 'Monthly strategy sessions, roadmap reviews, trend analysis' },
+                    { name: 'Ongoing', title: 'Technical Support', desc: 'Model monitoring, performance tuning, issue resolution' },
+                    { name: 'Quarterly', title: 'Optimization', desc: 'Performance reviews, enhancement recommendations, training' }
+                ],
+                deliverables: [
+                    'Monthly Strategy Sessions',
+                    'Technical Support (SLA-based)',
+                    'Quarterly Performance Reports',
+                    'Continuous Optimization',
+                    'Priority Access to VALO Expertise'
+                ]
+            },
+            training: {
+                title: 'AI Team Training',
+                description: 'Comprehensive upskilling program to build AI capabilities across your organization.',
+                phases: [
+                    { name: 'Week 1', title: 'Foundation', desc: 'AI fundamentals, tooling overview, use case exploration' },
+                    { name: 'Week 2-3', title: 'Hands-On', desc: 'Practical workshops, prompt engineering, workflow design' },
+                    { name: 'Week 4', title: 'Application', desc: 'Real-world projects, certification, ongoing resources' }
+                ],
+                deliverables: [
+                    'Custom Training Curriculum',
+                    'Hands-On Workshop Sessions',
+                    'Training Materials & Resources',
+                    'Certification & Assessment',
+                    '3-Month Post-Training Support'
+                ]
+            }
+        };
+
+        // Tier definitions
+        const tiers = {
+            starter: {
+                name: 'Starter',
+                priceRange: '£5,000 - £15,000',
+                priceNote: 'Fixed scope, defined deliverables',
+                duration: '2-4 weeks',
+                features: [
+                    'Single use case focus',
+                    'Limited integrations (1-2 systems)',
+                    'Basic documentation',
+                    'Email support'
+                ]
+            },
+            professional: {
+                name: 'Professional',
+                priceRange: '£15,000 - £50,000',
+                priceNote: 'Custom scope based on requirements',
+                duration: '1-3 months',
+                features: [
+                    'Multiple use cases',
+                    'Full system integrations',
+                    'Comprehensive documentation',
+                    'Priority support with SLA'
+                ]
+            },
+            enterprise: {
+                name: 'Enterprise',
+                priceRange: '£50,000+',
+                priceNote: 'Tailored enterprise engagement',
+                duration: '3-6+ months',
+                features: [
+                    'Full transformation program',
+                    'Unlimited integrations',
+                    'White-glove service',
+                    'Dedicated account manager'
+                ]
+            }
+        };
+
+        // Generate proposal
+        function generateProposal() {
+            const company = document.getElementById('clientCompany').value || '[Company Name]';
+            const name = document.getElementById('clientName').value || '[Contact Name]';
+            const title = document.getElementById('clientTitle').value || '[Title]';
+            const industry = document.getElementById('clientIndustry').value || 'your industry';
+            const summary = document.getElementById('projectSummary').value || 'We understand you are looking to explore AI opportunities to drive business value and operational efficiency.';
+            const notes = document.getElementById('discoveryNotes').value || '';
+            const startDate = document.getElementById('startDate').value;
+            const timeline = document.getElementById('timeline').value;
+            const milestones = document.getElementById('milestones').value;
+            const specificBudget = document.getElementById('specificBudget').value;
+
+            // Get selected services
+            const services = Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => {
+                const labels = {
+                    'ai-audit': 'AI Readiness Audit',
+                    'strategy': 'AI Strategy Development',
+                    'integration': 'System Integration',
+                    'automation': 'Process Automation',
+                    'training': 'Team Training',
+                    'support': 'Ongoing Support'
+                };
+                return labels[cb.value] || cb.value;
+            });
+
+            const template = templates[currentTemplate];
+            const tier = tiers[currentTier];
+            const dateStr = startDate ? new Date(startDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : '[Start Date]';
+            const today = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+            const validUntil = new Date();
+            validUntil.setDate(validUntil.getDate() + 30);
+
+            const priceDisplay = specificBudget || tier.priceRange;
+
+            const proposalHTML = `
+                <div class="proposal-header">
+                    <div class="proposal-logo">VALO</div>
+                    <div class="proposal-tagline">The AI Studio for Future-Driven Businesses</div>
+                    <h1 class="proposal-title" contenteditable="true">${template.title}</h1>
+                    <p class="proposal-subtitle" contenteditable="true">Prepared for ${company}</p>
+                    <div class="proposal-meta">
+                        <div class="meta-item">
+                            <div class="meta-label">Prepared For</div>
+                            <div class="meta-value" contenteditable="true">${name}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Date</div>
+                            <div class="meta-value">${today}</div>
+                        </div>
+                        <div class="meta-item">
+                            <div class="meta-label">Valid Until</div>
+                            <div class="meta-value">${validUntil.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Executive Summary</h2>
+                    <div class="section-content" contenteditable="true">
+                        <p>Dear ${name},</p>
+                        <p>Thank you for considering VALO as your AI transformation partner. ${summary}</p>
+                        <p>Based on our initial conversations${notes ? ' and the insights gathered during discovery' : ''}, we have prepared this proposal outlining how VALO can help ${company} leverage AI to achieve measurable business outcomes.</p>
+                        <p>This ${template.title.toLowerCase()} engagement is designed to ${currentTemplate === 'discovery' ? 'assess your current state and provide a clear roadmap for AI adoption' : currentTemplate === 'implementation' ? 'deliver a production-ready AI solution tailored to your requirements' : currentTemplate === 'retainer' ? 'provide ongoing AI expertise and support to continuously optimise your capabilities' : 'upskill your team with practical AI knowledge and capabilities'}.</p>
+                    </div>
+                </div>
+
+                ${notes ? `
+                <div class="proposal-section">
+                    <h2 class="section-title">Discovery Insights</h2>
+                    <div class="section-content" contenteditable="true">
+                        <p>During our discovery conversations, we identified the following key areas of opportunity:</p>
+                        <p>${notes.replace(/\n/g, '</p><p>')}</p>
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Scope of Work</h2>
+                    <div class="section-content" contenteditable="true">
+                        <p>This engagement includes the following services:</p>
+                        <ul class="deliverable-list">
+                            ${services.map(s => `<li>${s}</li>`).join('')}
+                        </ul>
+                        <p style="margin-top: 1rem;">${template.description}</p>
+                    </div>
+                </div>
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Deliverables</h2>
+                    <div class="section-content">
+                        <ul class="deliverable-list" contenteditable="true">
+                            ${template.deliverables.map(d => `<li>${d}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Timeline & Approach</h2>
+                    <div class="section-content" contenteditable="true">
+                        <p>We propose commencing this engagement on <strong>${dateStr}</strong> with the following phased approach:</p>
+                        ${template.phases.map(phase => `
+                            <div class="timeline-item">
+                                <div class="timeline-phase">${phase.name}</div>
+                                <div class="timeline-content">
+                                    <div class="timeline-title">${phase.title}</div>
+                                    <div class="timeline-desc">${phase.desc}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                        ${milestones ? `<p style="margin-top: 1rem;"><strong>Key Constraints:</strong> ${milestones}</p>` : ''}
+                    </div>
+                </div>
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Investment</h2>
+                    <div class="section-content">
+                        <div class="pricing-box">
+                            <div class="pricing-header">
+                                <span class="pricing-tier" contenteditable="true">${tier.name} Package</span>
+                                <span class="pricing-amount" contenteditable="true">${priceDisplay}</span>
+                            </div>
+                            <p class="pricing-note" contenteditable="true">${tier.priceNote}</p>
+                        </div>
+                        <p style="margin-top: 1rem;" contenteditable="true">This investment covers all deliverables outlined in this proposal. Payment terms: 50% upon commencement, 50% upon completion.</p>
+                    </div>
+                </div>
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Why VALO?</h2>
+                    <div class="section-content" contenteditable="true">
+                        <p>VALO combines deep technical expertise with business acumen to deliver AI solutions that actually work. We specialise in:</p>
+                        <ul class="deliverable-list">
+                            <li>Practical AI implementation, not just strategy decks</li>
+                            <li>Rapid time-to-value with proven methodologies</li>
+                            <li>Industry-specific expertise across ${industry}</li>
+                            <li>Ongoing partnership approach, not just project delivery</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="proposal-section">
+                    <h2 class="section-title">Next Steps</h2>
+                    <div class="section-content" contenteditable="true">
+                        <p>To proceed with this engagement:</p>
+                        <ol style="padding-left: 1.5rem; color: #475569;">
+                            <li style="padding: 0.5rem 0;">Review and approve this proposal</li>
+                            <li style="padding: 0.5rem 0;">Sign the attached Statement of Work</li>
+                            <li style="padding: 0.5rem 0;">Submit initial payment to secure start date</li>
+                            <li style="padding: 0.5rem 0;">Attend kick-off meeting scheduled for ${dateStr}</li>
+                        </ol>
+                        <p style="margin-top: 1rem;">We are excited about the opportunity to work with ${company} and look forward to your feedback on this proposal.</p>
+                    </div>
+                </div>
+
+                <div class="proposal-footer">
+                    <p><strong>VALO Studios Ltd</strong></p>
+                    <p>The AI Studio for Future-Driven Businesses</p>
+                    <p>hello@valostudios.com | valostudios.com</p>
+                </div>
+            `;
+
+            document.getElementById('proposalContent').innerHTML = proposalHTML;
+            generatedProposal = proposalHTML;
+            showToast('✨', 'Proposal generated successfully!');
+        }
+
+        // Export functions
+        function exportAsMarkdown() {
+            if (!generatedProposal) {
+                showToast('⚠️', 'Generate a proposal first!');
+                return;
+            }
+
+            const company = document.getElementById('clientCompany').value || 'Company';
+            const template = templates[currentTemplate];
+            const tier = tiers[currentTier];
+            
+            let md = `# ${template.title}\n\n`;
+            md += `**Prepared for:** ${company}\n`;
+            md += `**Date:** ${new Date().toLocaleDateString('en-GB')}\n`;
+            md += `**Tier:** ${tier.name} (${tier.priceRange})\n\n`;
+            md += `---\n\n`;
+
+            // Extract text content from HTML
+            const temp = document.createElement('div');
+            temp.innerHTML = generatedProposal;
+            
+            temp.querySelectorAll('.proposal-section').forEach(section => {
+                const title = section.querySelector('.section-title')?.textContent || '';
+                const content = section.querySelector('.section-content')?.innerHTML || '';
+                
+                if (title) md += `## ${title}\n\n`;
+                
+                // Convert HTML to Markdown
+                let text = content
+                    .replace(/<p>/gi, '')
+                    .replace(/<\/p>/gi, '\n\n')
+                    .replace(/<li>/gi, '- ')
+                    .replace(/<\/li>/gi, '\n')
+                    .replace(/<strong>/gi, '**')
+                    .replace(/<\/strong>/gi, '**')
+                    .replace(/<[^>]+>/g, '')
+                    .replace(/&nbsp;/g, ' ')
+                    .trim();
+                
+                md += text + '\n\n';
+            });
+
+            downloadFile(md, `${company.replace(/\s+/g, '_')}_Proposal.md`, 'text/markdown');
+            showToast('✓', 'Markdown exported!');
+            hideExportModal();
+        }
+
+        function exportAsHTML() {
+            if (!generatedProposal) {
+                showToast('⚠️', 'Generate a proposal first!');
+                return;
+            }
+
+            const company = document.getElementById('clientCompany').value || 'Company';
+            
+            const fullHTML = `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>VALO Proposal - ${company}</title>
+    <style>
+        body { font-family: 'Inter', -apple-system, sans-serif; line-height: 1.7; max-width: 800px; margin: 0 auto; padding: 40px; color: #1e293b; }
+        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; border-bottom: 3px solid #7c3aed; padding-bottom: 1rem; }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.375rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-top: 2rem; }
+        .header { text-align: center; margin-bottom: 3rem; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 2.5rem; font-weight: 700; color: #7c3aed; }
+        .meta { display: flex; justify-content: center; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        ul { padding-left: 1.5rem; }
+        li { padding: 0.5rem 0; }
+        .pricing { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; margin: 1rem 0; }
+        .footer { margin-top: 3rem; padding-top: 2rem; border-top: 2px solid #e2e8f0; text-align: center; color: #64748b; }
+    </style>
+</head>
+<body>
+    ${generatedProposal}
+</body>
+</html>`;
+
+            downloadFile(fullHTML, `${company.replace(/\s+/g, '_')}_Proposal.html`, 'text/html');
+            showToast('✓', 'HTML exported!');
+            hideExportModal();
+        }
+
+        function exportAsDOCX() {
+            // DOCX-style HTML that Word can open
+            if (!generatedProposal) {
+                showToast('⚠️', 'Generate a proposal first!');
+                return;
+            }
+
+            const company = document.getElementById('clientCompany').value || 'Company';
+            
+            const docxHTML = `<!DOCTYPE html>
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset="utf-8">
+    <title>VALO Proposal - ${company}</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>100</w:Zoom>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+        body { font-family: Calibri, sans-serif; font-size: 11pt; line-height: 1.5; }
+        h1 { font-size: 24pt; color: #7c3aed; border-bottom: 2pt solid #7c3aed; padding-bottom: 12pt; }
+        h2 { font-size: 16pt; color: #1e293b; border-bottom: 1pt solid #e2e8f0; padding-bottom: 6pt; margin-top: 24pt; }
+        .header { text-align: center; margin-bottom: 36pt; }
+        .logo { font-size: 36pt; font-weight: bold; color: #7c3aed; }
+        ul { margin-left: 18pt; }
+        li { margin: 6pt 0; }
+        .pricing { background: #f8fafc; border: 1pt solid #e2e8f0; padding: 12pt; margin: 12pt 0; }
+        .footer { margin-top: 36pt; padding-top: 24pt; border-top: 1pt solid #e2e8f0; text-align: center; color: #64748b; }
+    </style>
+</head>
+<body>
+    ${generatedProposal.replace(/contenteditable="true"/g, '')}
+</body>
+</html>`;
+
+            downloadFile(docxHTML, `${company.replace(/\s+/g, '_')}_Proposal.doc.html`, 'application/msword');
+            showToast('✓', 'Word-compatible HTML exported!');
+            hideExportModal();
+        }
+
+        function copyToClipboard() {
+            if (!generatedProposal) {
+                showToast('⚠️', 'Generate a proposal first!');
+                return;
+            }
+
+            const temp = document.createElement('div');
+            temp.innerHTML = generatedProposal;
+            
+            // Get clean text
+            let text = temp.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('✓', 'Copied to clipboard!');
+            }).catch(() => {
+                showToast('✗', 'Failed to copy');
+            });
+            hideExportModal();
+        }
+
+        // Storage functions
+        function saveToStorage() {
+            const data = {
+                template: currentTemplate,
+                tier: currentTier,
+                clientCompany: document.getElementById('clientCompany').value,
+                clientName: document.getElementById('clientName').value,
+                clientTitle: document.getElementById('clientTitle').value,
+                clientIndustry: document.getElementById('clientIndustry').value,
+                projectSummary: document.getElementById('projectSummary').value,
+                discoveryNotes: document.getElementById('discoveryNotes').value,
+                startDate: document.getElementById('startDate').value,
+                timeline: document.getElementById('timeline').value,
+                milestones: document.getElementById('milestones').value,
+                specificBudget: document.getElementById('specificBudget').value,
+                services: Array.from(document.querySelectorAll('.checkbox-item input:checked')).map(cb => cb.value)
+            };
+            
+            localStorage.setItem('valoProposalData', JSON.stringify(data));
+            showToast('💾', 'Saved to browser storage!');
+        }
+
+        function loadFromStorage() {
+            const saved = localStorage.getItem('valoProposalData');
+            if (!saved) {
+                showToast('ℹ️', 'No saved data found');
+                return;
+            }
+            
+            try {
+                const data = JSON.parse(saved);
+                
+                // Restore values
+                if (data.template) {
+                    currentTemplate = data.template;
+                    document.querySelectorAll('.template-option').forEach(o => {
+                        o.classList.toggle('active', o.dataset.template === data.template);
+                    });
+                }
+                
+                if (data.tier) {
+                    selectTier(data.tier);
+                }
+                
+                document.getElementById('clientCompany').value = data.clientCompany || '';
+                document.getElementById('clientName').value = data.clientName || '';
+                document.getElementById('clientTitle').value = data.clientTitle || '';
+                document.getElementById('clientIndustry').value = data.clientIndustry || '';
+                document.getElementById('projectSummary').value = data.projectSummary || '';
+                document.getElementById('discoveryNotes').value = data.discoveryNotes || '';
+                document.getElementById('startDate').value = data.startDate || '';
+                document.getElementById('timeline').value = data.timeline || '1-month';
+                document.getElementById('milestones').value = data.milestones || '';
+                document.getElementById('specificBudget').value = data.specificBudget || '';
+                
+                // Restore checkboxes
+                document.querySelectorAll('.checkbox-item input').forEach(cb => {
+                    cb.checked = data.services?.includes(cb.value) || false;
+                });
+                
+                // Regenerate if we have company name
+                if (data.clientCompany) {
+                    generateProposal();
+                }
+                
+                showToast('📂', 'Loaded saved data!');
+            } catch (e) {
+                showToast('✗', 'Failed to load saved data');
+            }
+        }
+
+        // Utility functions
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function showToast(icon, message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastIcon').textContent = icon;
+            document.getElementById('toastMessage').textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function showExportModal() {
+            document.getElementById('exportModal').classList.add('active');
+        }
+
+        function hideExportModal() {
+            document.getElementById('exportModal').classList.remove('active');
+        }
+
+        function refreshPreview() {
+            generateProposal();
+        }
+
+        // Close modal on outside click
+        document.getElementById('exportModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideExportModal();
+            }
+        });
+    </script>
+</body>
+</html>
